@@ -7,6 +7,7 @@ from .utility import signup_email
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import EmailOTPVerifySerializer,ResendOTPSerializer,LoginSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf import settings
 from datetime import timedelta
 from django.utils import timezone
@@ -159,7 +160,7 @@ class LoginView(APIView):
     
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
-
+    authentication_classes = [JWTAuthentication]
     def post(self, request):
         refresh_token = request.COOKIES.get(settings.REFRESH_TOKEN_COOKIE_NAME)
         if not refresh_token:
